@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+typedef vector<int> vi;
+#define mod 1000000007
+typedef long long ll;
+
+vi ar[100001];
+int visited[100001];
+
+void dfs(int node,int &x)
+{
+	visited[node]=1;
+	x++;
+	for(auto child:ar[node])
+	{
+		if(visited[child]==0)
+		{
+			dfs(child,x);
+		}
+	}
+}
+int main()
+{
+	int t;
+	cin>>t;
+	while(t--)
+	{
+		int n,m;
+		cin>>n>>m;
+		for(int i=1;i<=n;i++)
+		ar[i].clear(),visited[i]=0;
+		while(m--)
+		{
+			int a,b;
+			cin>>a>>b;
+			ar[a].push_back(b);
+			ar[b].push_back(a);
+		}
+		int count=0;
+		ll res=1;
+		for(int i=1;i<=n;i++)
+		{
+			if(visited[i]==0)
+			{	int x=0;
+				dfs(i,x);
+				res=(res%mod*x%mod)%mod;
+				count++;
+			}
+		}
+		
+		cout<<count<<" "<<res%mod<<endl;
+	}
+}
