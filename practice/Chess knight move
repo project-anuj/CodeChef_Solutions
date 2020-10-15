@@ -1,0 +1,85 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int targetX,targetY;
+int ar[9][9];
+int visited[9][9];
+int dist[9][9];
+int dx[]={-2,-1,1,2,2,1,-1,-2};
+int dy[]={1,2,2,1,-1,-2,-2,-1};
+
+bool isValid(int x,int y)
+{
+	if(x<1 || x>8 ||y<1 || y>8)
+	return false;
+	if(visited[x][y]==1)
+	return false;
+	
+	return true;
+}
+int bfs(int srcX,int srcY)
+{
+	queue<pair<int,int>> q;
+	q.push({srcX,srcY});
+	visited[srcX][srcY]=1;
+	dist[srcX][srcY]=0;
+	if(targetX==srcX && targetY==srcY)
+	return dist[srcX][srcY];
+	while(q.size()>0)
+	{
+		pair<int,int> curr=q.front();
+		int currX=curr.first;
+		int currY=curr.second;
+		q.pop();
+		for(int i=0;i<8;i++)
+		{
+			if(isValid(currX+dx[i],currY+dy[i]))
+			{
+				int newX=currX+dx[i];
+				int newY=currY+dy[i];
+				dist[newX][newY]=dist[currX][currY]+1;
+				visited[newX][newY]=1;
+				q.push({newX,newY});
+				if(newX==targetX && newY==targetY)
+				return 	dist[targetX][targetY];
+			}
+		}
+	}
+}
+int main()
+{	
+	unordered_map<char,int> mp;
+	mp['a']=1;
+	mp['b']=2;
+	mp['c']=3;
+	mp['d']=4;
+	mp['e']=5;
+	mp['f']=6;
+	mp['g']=7;
+	mp['h']=8;
+	mp['1']=1;
+	mp['2']=2;
+	mp['3']=3;
+	mp['4']=4;
+	mp['5']=5;
+	mp['6']=6;
+	mp['7']=7;
+	mp['8']=8;
+	int t;
+	cin>>t;
+	while(t--)
+	{	
+		char a,b;
+		for(int i=1;i<=8;i++)
+		for(int j=1;j<=8;j++)
+		visited[i][j]=0;
+		string s;
+		cin>>s;
+		a=s[0];
+		b=s[1];
+		cin>>s;
+		targetX=mp[s[0]];
+		targetY=mp[s[1]];
+		cout<<bfs(mp[a],mp[b])<<endl;
+	}
+}
